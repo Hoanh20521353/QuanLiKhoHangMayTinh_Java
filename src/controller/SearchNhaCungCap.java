@@ -10,7 +10,7 @@ import model.NhaCungCap;
 
 /**
  *
- * @author sinh
+ * @author hoanhnguyen
  */
 public class SearchNhaCungCap {
 

@@ -22,7 +22,7 @@ public class JDBCUtil {
 			c = DriverManager.getConnection(url, userName, password);
 		} catch (Exception e) {
 			// TODO: handle exception
-//			JOptionPane.showMessageDialog(null, "Không thể kết nối đến cơ sở dữ liệu !","Lỗi", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Không thể kết nối đến cơ sở dữ liệu !","Lỗi", JOptionPane.ERROR_MESSAGE);
 		}
 		return c;
 	}

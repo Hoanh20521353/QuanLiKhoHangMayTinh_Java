@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  *
- * @author kali
+ * @author hoanhnguyen
  */
 public class NhaCungCap {
     private String maNhaCungCap;
