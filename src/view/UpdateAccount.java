@@ -4,8 +4,12 @@
  */
 package view;
 
-import controller.BCrypt;
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
+import view.AccountForm;
 import model.Account;
 import dao.AccountDAO;
 
@@ -13,21 +17,28 @@ import dao.AccountDAO;
  *
  * @author hoanhnguyen
  */
-public class AddAccount extends javax.swing.JDialog {
+public class UpdateAccount extends javax.swing.JDialog {
 
     /**
      * Creates new form AddAccount
      */
     private AccountForm homeAcc;
 
-    public AddAccount(javax.swing.JInternalFrame parent, javax.swing.JFrame owner, boolean modal) {
+    public UpdateAccount(javax.swing.JInternalFrame parent, javax.swing.JFrame owner, boolean modal) {
         super(owner, modal);
         initComponents();
         setLocationRelativeTo(null);
         homeAcc = (AccountForm) parent;
+        Account acc = homeAcc.getAccountSelect();
+        txtfullname.setText(acc.getFullName());
+        txtusername.setText(acc.getUser());
+        txtusername.setEditable(false);
+        txtEmail.setText(acc.getEmail());
+        vaitro.setSelectedItem(acc.getRole());
+        trangthai.setSelectedIndex(acc.getStatus());
     }
 
-    AddAccount() {
+    UpdateAccount() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -45,26 +56,26 @@ public class AddAccount extends javax.swing.JDialog {
         txtfullname = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtusername = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        txtpassword = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         vaitro = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnupdate = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        trangthai = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Thêm tài khoản mới");
+        setTitle("Sửa tài khoản");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
         jLabel2.setText("Tên tài khoản");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 120, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 110, -1));
 
         txtfullname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,158 +89,148 @@ public class AddAccount extends javax.swing.JDialog {
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, 24));
         jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 298, 38));
 
-        jLabel4.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
-        jLabel4.setText("Mật khẩu");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 68, -1));
-        jPanel1.add(txtpassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 298, 38));
-
         jLabel5.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
         jLabel5.setText("Vai trò");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 50, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 50, -1));
 
+        vaitro.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
         vaitro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý kho", "Nhân viên nhập", "Nhân viên xuất" }));
         vaitro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel1.add(vaitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 298, 38));
+        vaitro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vaitroActionPerformed(evt);
+            }
+        });
+        jPanel1.add(vaitro, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 298, 38));
 
-        jButton1.setBackground(java.awt.Color.blue);
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Thêm");
-        jButton1.setBorder(null);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnupdate.setBackground(java.awt.Color.blue);
+        btnupdate.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
+        btnupdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnupdate.setText("Cập nhật");
+        btnupdate.setBorder(null);
+        btnupdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnupdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnupdateMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnupdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnupdateActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 140, 38));
+        jPanel1.add(btnupdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, 140, 38));
 
-        jButton2.setBackground(java.awt.Color.red);
-        jButton2.setText("Huỷ");
-        jButton2.setBorder(null);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnClose.setBackground(new java.awt.Color(255, 0, 0));
+        btnClose.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
+        btnClose.setText("Huỷ");
+        btnClose.setBorder(null);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCloseActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 510, 140, 38));
+        jPanel1.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 510, 140, 38));
 
         jPanel2.setBackground(java.awt.Color.blue);
 
         jLabel1.setFont(new java.awt.Font("SF Pro Display", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("THÊM TÀI KHOẢN");
+        jLabel1.setText("CẬP NHẬT THÔNG TIN");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(64, 64, 64)
                 .addComponent(jLabel1)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1)
-                .addGap(20, 20, 20))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 390, 70));
 
         jLabel6.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
-        jLabel6.setText("Email");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 50, -1));
+        jLabel6.setText("Trạng thái");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 90, -1));
+
+        trangthai.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
+        trangthai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bị Khóa", "Hoạt động" }));
+        trangthai.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        trangthai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trangthaiActionPerformed(evt);
+            }
+        });
+        jPanel1.add(trangthai, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 298, 38));
+
+        jLabel4.setFont(new java.awt.Font("SF Pro Display", 0, 16)); // NOI18N
+        jLabel4.setText("Email");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
         jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 300, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnupdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnupdateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnupdateActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnCloseActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void btnupdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnupdateMouseClicked
         // TODO add your handling code here:
         String fullName = txtfullname.getText();
         String user = txtusername.getText();
-        String password = BCrypt.hashpw(txtpassword.getText(), BCrypt.gensalt(12));
+        String password = homeAcc.getAccountSelect().getPassword();
         String role = vaitro.getSelectedItem().toString();
         String email = txtEmail.getText();
-        if (fullName.equals("") || user.equals("") || password.equals("") || role.equals("") || email.equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin !", "Cảnh báo ", JOptionPane.WARNING_MESSAGE);
-        } else {
-            if (AccountDAO.getInstance().selectById(user) != null) {
-                if (isValid(email)) {
-                    Account acc = new Account(fullName, user, password, role, 1, email);
-                    AccountDAO.getInstance().insert(acc);
-                    this.dispose();
-                    homeAcc.loadDataToTable(AccountDAO.getInstance().selectAll());
-                    JOptionPane.showMessageDialog(this, "Thêm thành công !");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Vui lòng nhập email đúng định dạng !", "Cảnh báo =", JOptionPane.WARNING_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-
-    }//GEN-LAST:event_jButton1MouseClicked
+        int status = trangthai.getSelectedIndex();
+        Account acc = new Account(fullName, user, password, role,status,email);
+        AccountDAO.getInstance().update(acc);
+        this.dispose();
+        homeAcc.loadDataToTable(AccountDAO.getInstance().selectAll());
+        JOptionPane.showMessageDialog(this, "Cập nhật thành công !");
+    }//GEN-LAST:event_btnupdateMouseClicked
 
     private void txtfullnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfullnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtfullnameActionPerformed
 
-    static boolean isValid(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
-        return email.matches(regex);
-    }
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) throws UnsupportedLookAndFeelException {
-//        UIManager.setLookAndFeel(new FlatLightLaf());
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                AddAccount dialog = new AddAccount(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
+    private void vaitroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vaitroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_vaitroActionPerformed
+
+    private void trangthaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trangthaiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_trangthaiActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnupdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -238,9 +239,9 @@ public class AddAccount extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JComboBox<String> trangthai;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtfullname;
-    private javax.swing.JTextField txtpassword;
     private javax.swing.JTextField txtusername;
     private javax.swing.JComboBox<String> vaitro;
     // End of variables declaration//GEN-END:variables
